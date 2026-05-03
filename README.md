@@ -123,9 +123,9 @@ InventoryItem (Aggregate Root)
 ## Tech Stack
 
 ```
-Backend          Java 21 · Spring Boot 3.x · Spring Security
+Backend          Java 21 · Spring Boot 3.5.7 · Spring Security
 Architecture     DDD · Hexagonal (Ports & Adapters) · CQRS
-Messaging        Apache Kafka (event streaming & async communication)
+Messaging        Apache Kafka (event streaming & async communication), gRPC
 Security         OAuth2 Authorization Server · JWT (stateless auth)
 Persistence      PostgreSQL / Redis
 Containerization Docker · Docker Compose
@@ -138,27 +138,27 @@ Build            Maven
 
 ```
 auris/
-├── payment-service/
+├── payment/
 │   ├── domain/                  # Aggregates, Value Objects, Domain Events
 │   ├── application/             # Commands, Queries, Use Cases (Ports)
 │   └── infrastructure/          # Kafka, JPA, REST (Adapters)
 │
-├── inventory-service/
+├── user_account/
 │   ├── domain/
 │   ├── application/
 │   └── infrastructure/
 │
-├── organization-service/
+├── organization/
 │   ├── domain/
 │   ├── application/
 │   └── infrastructure/
 │
-├── module-service/
+├── membership/
 │   ├── domain/
 │   ├── application/
 │   └── infrastructure/
 │
-├── security-service/            # OAuth2 Authorization Server
+├── security/                   # OAuth2 Authorization Server
 │   ├── config/
 │   └── infrastructure/
 │
@@ -189,11 +189,11 @@ docker-compose up -d
 ./mvnw clean install
 
 # Start services
-./mvnw spring-boot:run -pl payment-service &
-./mvnw spring-boot:run -pl inventory-service &
-./mvnw spring-boot:run -pl organization-service &
-./mvnw spring-boot:run -pl module-service &
-./mvnw spring-boot:run -pl security-service
+./mvnw spring-boot:run -pl payment &
+./mvnw spring-boot:run -pl user_account &
+./mvnw spring-boot:run -pl organization &
+./mvnw spring-boot:run -pl module &
+./mvnw spring-boot:run -pl identity
 ```
 
 ### Obtain an access token
@@ -222,11 +222,14 @@ curl -X POST http://localhost:9000/oauth2/token \
 
 ## Roadmap
 
+- [x] Security — OAuth2 + JWT
+- [ ] Upgrade to Spring Boot 4 + Java25
 - [ ] Payment Service — core domain & Kafka integration
+- [ ] User Account Service - core user management service
+- [ ] Membership Service - Glue between user account and organization services
 - [ ] Inventory Service — stock tracking with financial valuation
 - [ ] Organization Service — multi-tenant architecture
 - [ ] Module Service — pluggable accounting modules
-- [x] Security — OAuth2 + JWT
 - [ ] API Gateway — unified entry point with rate limiting
 - [ ] Reporting Service — financial statements & dashboards
 - [ ] Multi-currency support — ECB exchange rate integration
