@@ -1,0 +1,119 @@
+app:
+  config:
+    host: 192.168.0.30
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          auris:
+            issuer-uri: http://127.0.0.1:8340
+
+  # ================================
+  # Server Configuration
+  # ================================
+  application:
+    name: auris
+  profiles:
+    active: dev
+  config:
+    import: configserver:http://${app.config.host}:8350/
+    # USE HASHICORP VAULT FOR SECURITY STUFF
+  datasource:
+    url: jdbc:postgresql://${app.config.host}:5432/auris
+    username: postgres
+    password: R33oeeWcv
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+  data:
+    redis:
+      host: ${app.config.host}
+      port: 8341
+
+
+    # ================================
+    # Kafka / Spring Cloud Stream
+    # ================================
+    #  cloud:
+    #    vault:
+    #      uri: http://${app.config.host}:8200
+    #      connection-timeout: 5000
+    #      read-timeout: 15000
+    #      authentication: approle
+    #      app-role:
+    #        role-id: 4005af6d-5392-1b8e-5e86-dd0e924277a8
+    #        secret-id: d3cc7968-aaf2-424f-7dea-07642fa0b7bf
+    #      kv:
+    #        enabled: true
+    #        backend: secret
+    #      auris-database-path: "secret/auris/database"
+
+    stream:
+      kafka:
+        binder:
+          brokers: ${app.config.host}:9092
+    default:
+      binder: none
+
+server:
+  port: 8340
+
+# ================================
+# Eureka Configuration
+# ================================
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://${app.config.host}:8070/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+# ================================
+# Logging Configuration
+# ================================
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org.springframework.security: TRACE
+    org.springframework.web.client: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    zipkin2: INFO
+    brave: INFO
+    org:
+      springframework:
+        cloud:
+          sleuth: DEBUG
+        security: DEBUG
+
+# ================================
+# Management, Tracing, and Zipkin
+# ================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'refresh'
+  tracing:
+    enabled: true
+    propagation:
+      type: W3C,B3
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://${app.config.host}:9411/api/v2/spans
+

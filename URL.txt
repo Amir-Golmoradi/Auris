@@ -1,0 +1,18 @@
+get code
+
+
+http://localhost:8340/oauth2/authorize?response_type=code&client_id=comet-client&scope=openid&state=some-state&redirect_uri=http://localhost:8340/login/oauth2/code/comet-client
+
+
+post request
+
+
+curl --request POST \
+  --url http://localhost:8340/oauth2/token \
+  --header 'Authorization: Basic Y29tZXQtY2xpZW50OnNlY3JldA==' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data 'grant_type=authorization_code' \
+  --data 'code=RSaylNqJhMwBDOOrCx0g2Btctz3aYwA904w_mwND27AovuXv3HCgtZ49eV9L1d6NKDaOqgQWom--kko0Z5aiaa8nQtwLznV94Ncxk3xWCLRweUJwrFFHnWy8uj5AilCm' \
+  --data 'redirect_uri=http://localhost:8340/login/oauth2/code/comet-client' \
+  --data 'client_id=comet-client' \
+  --data 'client_secret=secret'
