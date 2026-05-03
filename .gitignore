@@ -9,12 +9,12 @@ target/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -31,10 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local environment ###
 .env
+
+### Local workspace files ###
+.m2/
+URL.txt
 Document/
-src/main/java/dev/auris/authentication_context/client/domain/enums/userAccount/Gender.java
 Data
 Document
-.m2
-URL.txt
+src/main/java/dev/auris/authentication_context/client/domain/enums/userAccount/Gender.java
