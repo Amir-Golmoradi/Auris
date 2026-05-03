@@ -1,0 +1,27 @@
+networks:
+  barcode_network:
+    external: true
+
+services:
+  app:
+    image: authorization-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8340:8340"
+    environment:
+      - JAVA_OPTS=-Xmx512m
+
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - barcode_network
+  redis:
+    image: redis:latest
+    ports:
+      - "8341:6379"
+    restart: unless-stopped
+    networks:
+      - barcode_network
