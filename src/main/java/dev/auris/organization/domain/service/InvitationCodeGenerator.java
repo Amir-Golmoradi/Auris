@@ -1,5 +1,7 @@
 package dev.auris.organization.domain.service;
 
+import dev.auris.organization.domain.value_object.InvitationCode;
+
 public interface InvitationCodeGenerator {
-    String generate(int length);
+    InvitationCode generate(int length);
 }
