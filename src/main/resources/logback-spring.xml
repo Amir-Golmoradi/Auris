@@ -1,0 +1,43 @@
+<configuration>
+  <!-- LOGSTASH APPENDER -->
+  <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>192.168.0.30:5044</destination>
+    <reconnectionDelay>5000</reconnectionDelay>
+    <includeCallerData>false</includeCallerData>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+      <providers>
+        <timestamp/>
+        <message/>
+        <loggerName/>
+        <logLevel/>
+        <threadName/>
+        <mdc>
+          <fieldName>mdc</fieldName>
+        </mdc>
+
+        <stackTrace/>
+      </providers>
+    </encoder>
+  </appender>
+
+  <!-- ✅ CORRECT: Use ch.qos.logback.classic.AsyncAppender -->
+  <appender name="ASYNC_LOGSTASH" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="LOGSTASH"/>
+    <queueSize>1000</queueSize>
+    <includeCallerData>false</includeCallerData>
+    <discardingThreshold>0</discardingThreshold>
+  </appender>
+
+  <!-- CONSOLE APPENDER -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- ROOT LOGGER -->
+  <root level="INFO">
+    <appender-ref ref="ASYNC_LOGSTASH"/>
+    <appender-ref ref="CONSOLE"/>
+  </root>
+</configuration>
