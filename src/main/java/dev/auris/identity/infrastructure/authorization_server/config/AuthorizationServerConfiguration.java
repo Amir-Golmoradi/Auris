@@ -89,7 +89,8 @@ public class AuthorizationServerConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/", "/login", "/error").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/organizations").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/Organization/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/Organization/register/invitation_code").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                         .requestMatchers(Constants.SWAGGER_WHITELIST).permitAll()
                         .anyRequest().authenticated()

@@ -49,7 +49,7 @@ public class RegisterNewOwnerHandler {
                 OrganizationName.of(command.organizationName()),
                 OfficePhoneNumber.of(command.officePhoneNumber())
         );
-        organization.assignMemberInvitationCode(codeGenerator);
+        organization.assignInvitationCode(codeGenerator);
         // 2. Save the created organization
         Organization savedOrganization = saveOrganizationPort.save(organization);
         // 3. Create the user account

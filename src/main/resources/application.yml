@@ -69,25 +69,6 @@ server:
   port: 8340
 
 # ================================
-# OpenAPI / Swagger UI
-# ================================
-springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-    display-request-duration: true
-    doc-expansion: none
-    operations-sorter: method
-    tags-sorter: alpha
-    oauth:
-      client-id: auris-client
-      use-pkce-with-authorization-code-grant: false
-  show-actuator: false
-
-# ================================
 # Eureka Configuration
 # ================================
 eureka:
@@ -135,3 +116,4 @@ management:
   zipkin:
     tracing:
       endpoint: http://${app.config.host}:9411/api/v2/spans
+

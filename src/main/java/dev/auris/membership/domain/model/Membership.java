@@ -102,7 +102,7 @@ public class Membership extends AggregateRoot<MembershipId, DomainEvent> {
 
     public void changeRole(MembershipRole newRole, Membership actor) {
         ensureIsActive();
-        new MemberMustHoldRolePolicy(MembershipRole.OWNER).enforce(actor);
+        new MemberMustHoldRolePolicy(MembershipRole.ADMIN).enforce(actor);
         this.role = newRole;
         this.updatedAt = OffsetDateTime.now();
         addDomainEvent(new MembershipRoleChangedEvent(this.getId(), userAccountId, newRole));
@@ -110,7 +110,7 @@ public class Membership extends AggregateRoot<MembershipId, DomainEvent> {
 
     public void suspend(Membership actor) {
         ensureIsActive();
-        new MemberMustHoldRolePolicy(MembershipRole.OWNER).enforce(actor);
+        new MemberMustHoldRolePolicy(MembershipRole.ADMIN).enforce(actor);
         this.status = MembershipStatus.SUSPENDED;
         this.updatedAt = OffsetDateTime.now();
         addDomainEvent(new MembershipSuspendedEvent(this.getId(), SuspensionReason.MANUAL));
@@ -127,7 +127,7 @@ public class Membership extends AggregateRoot<MembershipId, DomainEvent> {
 
     public void reactivate(Membership actor) {
         ensureIsSuspended();
-        new MemberMustHoldRolePolicy(MembershipRole.OWNER).enforce(actor);
+        new MemberMustHoldRolePolicy(MembershipRole.ADMIN).enforce(actor);
         this.status = MembershipStatus.ACTIVE;
         this.updatedAt = OffsetDateTime.now();
         addDomainEvent(new MembershipReactivatedEvent(this.getId(), userAccountId));

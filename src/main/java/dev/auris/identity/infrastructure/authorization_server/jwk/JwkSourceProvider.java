@@ -17,7 +17,7 @@ public class JwkSourceProvider {
     public JWKSource<SecurityContext> jwkSourceGenerator() {
         RSAKey rsaKey = generateRSAJwk();
         JWKSet jwkSet = new JWKSet(rsaKey);
-        return (jwkSelector, context) -> jwkSelector.select(jwkSet);
+        return (jwkSelector, _) -> jwkSelector.select(jwkSet);
     }
 
     private static RSAKey generateRSAJwk() {
