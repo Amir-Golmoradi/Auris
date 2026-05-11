@@ -13,6 +13,8 @@ import dev.auris.user_account.infrastructure.adapter.in.web.dto.response.GetUser
 import dev.auris.user_account.infrastructure.adapter.in.web.dto.response.GetUserAccountByUsernameResponseDto;
 import dev.auris.user_account.infrastructure.adapter.in.web.dto.response.GetUserAccountProfileResponseDto;
 import dev.auris.user_account.infrastructure.adapter.in.web.dto.response.ListUserAccountsItemDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Tag(name = "User Account", description = "User account query endpoints")
 public class UserAccountQueryApi {
     private final GetUserAccountByIdHandler getUserAccountByIdHandler;
     private final GetUserAccountByUsernameHandler getUserAccountByUsernameHandler;
@@ -42,6 +45,7 @@ public class UserAccountQueryApi {
     }
 
     @GetMapping("/{userAccountId}")
+    @Operation(summary = "Get user account by ID")
     public GetUserAccountByIdResponseDto getById(@PathVariable String userAccountId) {
         var response = getUserAccountByIdHandler.handle(new GetUserAccountByIdQuery(userAccountId));
         return new GetUserAccountByIdResponseDto(
@@ -58,6 +62,7 @@ public class UserAccountQueryApi {
     }
 
     @GetMapping("/by-username")
+    @Operation(summary = "Get user account by username")
     public GetUserAccountByUsernameResponseDto getByUsername(@RequestParam String username) {
         var response = getUserAccountByUsernameHandler.handle(new GetUserAccountByUsernameQuery(username));
         return new GetUserAccountByUsernameResponseDto(
@@ -74,6 +79,7 @@ public class UserAccountQueryApi {
     }
 
     @GetMapping("/{userAccountId}/profile")
+    @Operation(summary = "Get user account profile")
     public GetUserAccountProfileResponseDto getProfile(@PathVariable String userAccountId) {
         var response = getUserAccountProfileHandler.handle(new GetUserAccountProfileQuery(userAccountId));
         return new GetUserAccountProfileResponseDto(
@@ -88,6 +94,7 @@ public class UserAccountQueryApi {
     }
 
     @GetMapping
+    @Operation(summary = "List user accounts")
     public List<ListUserAccountsItemDto> listAll() {
         return listUserAccountsHandler.handle(new ListUserAccountsQuery()).stream()
                 .map(this::toDto)
