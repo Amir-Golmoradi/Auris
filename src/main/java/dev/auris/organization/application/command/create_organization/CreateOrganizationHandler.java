@@ -19,12 +19,13 @@ public class CreateOrganizationHandler {
     }
 
     @Transactional
-    public Organization handle(CreateOrganizationCommand command) {
+    public CreateOrganizationResponse handle(CreateOrganizationCommand command) {
         var organization = Organization.create(
                 OrganizationName.of(command.name()),
                 OfficePhoneNumber.of(command.officePhoneNumber())
         );
-        organization.assignInvitationCode(codeGenerator);
-        return saveOrganizationPort.save(organization);
+        organization.assignMemberInvitationCode(codeGenerator);
+        var saved = saveOrganizationPort.save(organization);
+        return CreateOrganizationResponse.from(saved);
     }
 }
